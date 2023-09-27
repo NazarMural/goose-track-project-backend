@@ -1,0 +1,145 @@
+{
+    "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.1",
+    "title": "Swagger Goose Track",
+    "description": "Swagger to work with the Goose Track backend."
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [
+    {"url": "https://goose-track-project-backend.onrender.com"}, 
+    {"url": "http://localhost:3001"}
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    }
+    ],
+    "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Sign up new user",
+        "description": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Update an existent pet in the store",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New User Registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWithTokenSerializer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User with such email already exists"
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    }
+},
+"components": {
+    "schemas": {
+        "RegisterUser": {
+            "type": "object",
+            "required": ["name", "email", "password"],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Users name",
+                    "example": "User"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Users email",
+                    "format": "email"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Users password",
+                    "example": "qwerty12345"
+                }
+            }
+        },
+        "UserWithTokenSerializer": {
+            "type": "object",
+            "required": ["_id", "name", "email", "token"],
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "Users ID",
+                    "example": "9578a252-1d7a-4fcc-82e2-d1a528dd3d0c"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Users name",
+                    "example": "User"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Users email",
+                    "format": "email"
+                },
+                "token": {
+                    "type": "string",
+                    "description": "Users token",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiIyOWI4ZmZmNS0xN2NjLTQ5NTYtOTViZC1jN2U3N2FkZDEwOWEiLCJpYXQiOjE2ODE4OTM3MzEsImV4cCI6MTAwMDAwMDE2ODE4OTM3MzJ9.hQpNKIj4SR7Gm9waUMn7hzwKQyqwKrniL_qSW7SxrjM"
+                }
+            }
+        },
+        "errorBadRequesResponse": {
+            "type": "object",
+            "required": ["status", "message"],
+            "properties": {
+                "status": {
+                    "type": "integer",
+                    "description": "Error status code",
+                    "example": "400"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Error message",
+                    "example": "Bad request"
+                }
+            }
+        }
+    }
+}
+
+    
+}
