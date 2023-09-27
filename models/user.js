@@ -21,7 +21,7 @@ const userSchema = new Schema(
     },
     birthday: {
       type: String,
-      required: [true, "Birthday is required"],
+      default: "",
     },
     social: {
       type: String,
@@ -56,9 +56,6 @@ const registerSchema = Joi.object({
     .messages({ "any.required": "missing required password field" }),
   email: Joi.string()
     .pattern(emailRegaxp)
-    .required()
-    .messages({ "any.required": "missing required email field" }),
-  birthday: Joi.string()
     .required()
     .messages({ "any.required": "missing required email field" }),
 });
