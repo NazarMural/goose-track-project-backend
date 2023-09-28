@@ -18,7 +18,7 @@
     }
     ],
     "paths": {
-    "/auth/register": {
+    "/api/auth/register": {
       "post": {
         "tags": [
           "Auth"
@@ -27,7 +27,7 @@
         "description": "User registration",
         "parameters": [],
         "requestBody": {
-          "description": "Update an existent pet in the store",
+          "description": "Registration request parameters",
           "required": true,
           "content": {
             "application/json": {
@@ -43,7 +43,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserWithTokenSerializer"
+                  "$ref": "#/components/schemas/UserIsRegistered"
                 }
               }
             }
@@ -61,15 +61,53 @@
           "409": {
             "description": "User with such email already exists"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Sign in existing user",
+        "description": "User authorization",
+        "parameters": [],
+        "requestBody": {
+          "description": "Request parameters for authorization",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUser"
+              }
+            }
           }
-        ]
+        },
+        "responses": {
+          "201": {
+            "description": "New User Registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserIsAuthorized"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email or password is wrong"
+          }
+        }
       }
     }
 },
@@ -96,16 +134,18 @@
                 }
             }
         },
-        "UserWithTokenSerializer": {
+        "UserIsRegistered": {
             "type": "object",
-            "required": ["_id", "name", "email", "token"],
             "properties": {
-                "_id": {
-                    "type": "string",
-                    "description": "Users ID",
-                    "example": "9578a252-1d7a-4fcc-82e2-d1a528dd3d0c"
-                },
-                "name": {
+              "user": {
+                "$ref": "#/components/schemas/UserIsRegisteredPropertiesUser" 
+              }
+            }
+        },
+        "UserIsRegisteredPropertiesUser": {
+          "type": "object",
+          "properties": {
+            "name": {
                     "type": "string",
                     "description": "Users name",
                     "example": "User"
@@ -114,17 +154,11 @@
                     "type": "string",
                     "description": "Users email",
                     "format": "email"
-                },
-                "token": {
-                    "type": "string",
-                    "description": "Users token",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiIyOWI4ZmZmNS0xN2NjLTQ5NTYtOTViZC1jN2U3N2FkZDEwOWEiLCJpYXQiOjE2ODE4OTM3MzEsImV4cCI6MTAwMDAwMDE2ODE4OTM3MzJ9.hQpNKIj4SR7Gm9waUMn7hzwKQyqwKrniL_qSW7SxrjM"
                 }
-            }
+          }
         },
         "errorBadRequesResponse": {
             "type": "object",
-            "required": ["status", "message"],
             "properties": {
                 "status": {
                     "type": "integer",
@@ -137,9 +171,63 @@
                     "example": "Bad request"
                 }
             }
+        },
+        "LoginUser": {
+          "type": "object",
+          "required": ["email", "password"],
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "Users email",
+              "format": "email"
+            },
+            "password": {
+              "type": "string",
+              "description": "Users password",
+              "example": "qwerty12345"
+            }
+          }
+        },
+        "UserIsAuthorized": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string",
+              "description": "Users token",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiIyOWI4ZmZmNS0xN2NjLTQ5NTYtOTViZC1jN2U3N2FkZDEwOWEiLCJpYXQiOjE2ODE4OTM3MzEsImV4cCI6MTAwMDAwMDE2ODE4OTM3MzJ9.hQpNKIj4SR7Gm9waUMn7hzwKQyqwKrniL_qSW7SxrjM"
+            },
+            "user": {
+              "$ref": "#/components/schemas/UserIsAuthorizedPropertiesUser" 
+            }
+          }
+        },
+        "UserIsAuthorizedPropertiesUser": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Users ID",
+              "example": "9578a252-1d7a-4fcc-82e2-d1a528dd3d0c"
+            },
+            "email": {
+              "type": "string",
+              "description": "Users email",
+              "format": "email"
+            },
+            "name": {
+              "type": "string",
+              "description": "Users name",
+              "example": "User"
+            }
+          }
+        }   
+    },
+    "securitySchemes": {
+          "Bearer": {
+            "type": "http",
+            "schema": "bearer",
+            "bearerFormat": "JWT"
+          }
         }
-    }
-}
-
-    
+} 
 }
