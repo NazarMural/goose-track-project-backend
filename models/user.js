@@ -70,6 +70,24 @@ const loginSchema = Joi.object({
     .messages({ "any.required": "missing required email field" }),
 });
 
+const updateSchema = Joi.object({
+  name: Joi.string()
+    .min(1)
+    .messages({ "any.required": "missing required password field" }),
+  birthday: Joi.string()
+    .min(1)
+    .messages({ "any.required": "missing required password field" }),
+  email: Joi.string()
+    .pattern(emailRegaxp)
+    .messages({ "any.required": "missing required email field" }),
+  social: Joi.string()
+    .min(1)
+    .messages({ "any.required": "missing required password field" }),
+  phone: Joi.string()
+    .min(1)
+    .messages({ "any.required": "missing required password field" }),
+});
+
 const emailSchema = Joi.object({
   email: Joi.string()
     .pattern(emailRegaxp)
@@ -81,6 +99,7 @@ const schemas = {
   registerSchema,
   loginSchema,
   emailSchema,
+  updateSchema,
 };
 
 const User = model("user", userSchema);
