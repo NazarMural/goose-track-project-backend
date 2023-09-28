@@ -59,6 +59,7 @@ const login = async (req, res) => {
   res.json({
     token: token,
     user: {
+      id: user._id,
       email: user.email,
       name: user.name,
     },
@@ -72,8 +73,30 @@ const logout = async (req, res) => {
 };
 
 const getCurrent = async (req, res) => {
-  const { email, name } = req.user;
-  res.json({ email, name });
+  const { email, name, _id, birthday, social, phone, avatarURL } = req.user;
+  res.json({
+    currentUser: { _id, email, name, birthday, social, phone, avatarURL },
+  });
+};
+
+const updeteUser = async (req, res) => {
+  if (Object.keys(req.body).length === 0) {
+    throw HttpError(400, "missing fields");
+  }
+  const { userId } = req.params;
+  const result = await User.findByIdAndUpdate(userId, req.body, {
+    new: true,
+  });
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json({
+    name: result.name,
+    email: result.email,
+    birthday: result.birthday,
+    social: result.social,
+    phone: result.phone,
+  });
 };
 
 module.exports = {
@@ -81,4 +104,5 @@ module.exports = {
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
   getCurrent: ctrlWrapper(getCurrent),
+  updeteUser: ctrlWrapper(updeteUser),
 };

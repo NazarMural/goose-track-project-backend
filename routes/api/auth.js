@@ -18,4 +18,10 @@ router.post("/auth/logout", authenticate, ctrl.logout);
 
 router.get("/users/current", authenticate, ctrl.getCurrent);
 
+router.patch(
+  "/users/edit/:userId",
+  authenticate,
+  validateBody(schemas.updateSchema),
+  ctrl.updeteUser
+);
 module.exports = router;
