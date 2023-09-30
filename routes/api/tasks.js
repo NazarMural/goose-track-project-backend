@@ -8,8 +8,6 @@ const { validateBody, isValidId, authenticate } = require("../../middlewares");
 
 const { schemas } = require("../../models/task");
 
-// router.get("/", authenticate, ctrl.getTasks);
-
 router.get("/tasks", authenticate, ctrl.getTasks);
 
 router.post(
@@ -18,5 +16,14 @@ router.post(
   validateBody(schemas.createTaskSchema),
   ctrl.createTask
 );
+
+router.patch(
+  "/tasks/:taskID",
+  authenticate,
+  validateBody(schemas.updateTaskSchema),
+  ctrl.updateTask
+);
+
+router.delete("/tasks/:taskID", authenticate, ctrl.deleteTask);
 
 module.exports = router;
