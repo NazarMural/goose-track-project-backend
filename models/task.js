@@ -18,14 +18,16 @@ const taskSchema = new Schema(
     },
     priority: {
       type: String,
+      enum: ["low", "medium", "high"],
       required: true,
     },
     date: {
       type: String,
       required: true,
     },
-    categori: {
+    category: {
       type: String,
+      enum: ["to-do", "in-progress", "done"],
       required: true,
     },
     owner: {
@@ -45,11 +47,21 @@ const createTaskSchema = Joi.object({
   end: Joi.string().min(1).required(),
   priority: Joi.string().min(1).required(),
   date: Joi.string().min(1).required(),
-  categori: Joi.string().min(1).required(),
+  category: Joi.string().min(1).required(),
   owner: Joi.string().min(1).required(),
 });
 
-const schemas = { createTaskSchema };
+const updateTaskSchema = Joi.object({
+  title: Joi.string().min(1),
+  start: Joi.string().min(1),
+  end: Joi.string().min(1),
+  priority: Joi.string().min(1),
+  date: Joi.string().min(1),
+  category: Joi.string().min(1),
+  owner: Joi.string().min(1),
+});
+
+const schemas = { createTaskSchema, updateTaskSchema };
 
 const Task = model("task", taskSchema);
 
