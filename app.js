@@ -7,7 +7,8 @@ const swaggerDocument = require("./swagger.json");
 
 const authRouter = require("./routes/api/auth");
 const reviewRouter = require("./routes/api/reviews");
-// const contactsRouter = require("./routes/api/contacts");
+const tasksRouter = require("./routes/api/tasks");
+
 
 const app = express();
 
@@ -20,8 +21,8 @@ app.use("/api/reviews", reviewRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// app.use("/api/contacts", contactsRouter);
 app.use("/api", authRouter);
+app.use("/api", tasksRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

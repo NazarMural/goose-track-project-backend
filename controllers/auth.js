@@ -1,11 +1,7 @@
 const { User } = require("../models/user");
 const { HttpError, ctrlWrapper } = require("../helpers");
-const path = require("path");
-const fs = require("fs/promises");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
-const { nanoid } = require("nanoid");
 
 const { SECRET_KEY } = process.env;
 
@@ -56,9 +52,10 @@ const login = async (req, res) => {
 
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.json({
+  res.status(201).json({
     token: token,
     user: {
+      _id: user._id,
       email: user.email,
       name: user.name,
     },
@@ -72,8 +69,38 @@ const logout = async (req, res) => {
 };
 
 const getCurrent = async (req, res) => {
-  const { email, name } = req.user;
-  res.json({ email, name });
+  const { email, name, _id, birthday, social, phone, avatarURL } = req.user;
+  res.json({
+    currentUser: { _id, email, name, birthday, social, phone, avatarURL },
+  });
+};
+
+const updeteUser = async (req, res) => {
+  if (Object.keys(req.body).length === 0) {
+    throw HttpError(400, "missing fields");
+  }
+  const { userId } = req.params;
+  const result = await User.findByIdAndUpdate(userId, req.body, {
+    new: true,
+  });
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json({
+    name: result.name,
+    email: result.email,
+    birthday: result.birthday,
+    social: result.social,
+    phone: result.phone,
+  });
+};
+
+const uploadAvatar = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { avatarURL: req.file.path });
+  return res.json({
+    file: req.file.path,
+  });
 };
 
 module.exports = {
@@ -81,4 +108,6 @@ module.exports = {
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
   getCurrent: ctrlWrapper(getCurrent),
+  updeteUser: ctrlWrapper(updeteUser),
+  uploadAvatar: ctrlWrapper(uploadAvatar),
 };

@@ -49,7 +49,7 @@ const registerSchema = Joi.object({
   name: Joi.string()
     .min(1)
     .required()
-    .messages({ "any.required": "missing required password field" }),
+    .messages({ "any.required": "missing required name field" }),
   password: Joi.string()
     .min(7)
     .required()
@@ -59,6 +59,7 @@ const registerSchema = Joi.object({
     .required()
     .messages({ "any.required": "missing required email field" }),
 });
+
 const loginSchema = Joi.object({
   password: Joi.string()
     .min(7)
@@ -70,17 +71,36 @@ const loginSchema = Joi.object({
     .messages({ "any.required": "missing required email field" }),
 });
 
+const updateSchema = Joi.object({
+  name: Joi.string()
+    .min(1)
+    .messages({ "any.required": "missing required name field" }),
+  birthday: Joi.string()
+    .min(1)
+    .messages({ "any.required": "missing required birthday field" }),
+  email: Joi.string()
+    .pattern(emailRegaxp)
+    .messages({ "any.required": "missing required email field" }),
+  social: Joi.string()
+    .min(1)
+    .messages({ "any.required": "missing required social field" }),
+  phone: Joi.string()
+    .min(1)
+    .messages({ "any.required": "missing required phone field" }),
+});
+
 const emailSchema = Joi.object({
   email: Joi.string()
     .pattern(emailRegaxp)
     .required()
-    .messages({ "any.required": "missing required field email" }),
+    .messages({ "any.required": "missing required email field" }),
 });
 
 const schemas = {
   registerSchema,
   loginSchema,
   emailSchema,
+  updateSchema,
 };
 
 const User = model("user", userSchema);
