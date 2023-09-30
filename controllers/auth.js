@@ -1,11 +1,7 @@
 const { User } = require("../models/user");
 const { HttpError, ctrlWrapper } = require("../helpers");
-const path = require("path");
-const fs = require("fs/promises");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
-const { nanoid } = require("nanoid");
 
 const { SECRET_KEY } = process.env;
 
@@ -99,10 +95,19 @@ const updeteUser = async (req, res) => {
   });
 };
 
+const uploadAvatar = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { avatarURL: req.file.path });
+  return res.json({
+    file: req.file.path,
+  });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
   getCurrent: ctrlWrapper(getCurrent),
   updeteUser: ctrlWrapper(updeteUser),
+  uploadAvatar: ctrlWrapper(uploadAvatar),
 };
