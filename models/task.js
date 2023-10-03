@@ -47,8 +47,7 @@ const createTaskSchema = Joi.object({
   end: Joi.string().min(1).required(),
   priority: Joi.string().min(1).required(),
   date: Joi.string().min(1).required(),
-  category: Joi.string().min(1).required(),
-  owner: Joi.string().min(1).required(),
+  category: Joi.string().min(1).required()
 });
 
 const updateTaskSchema = Joi.object({
@@ -57,8 +56,7 @@ const updateTaskSchema = Joi.object({
   end: Joi.string().min(1),
   priority: Joi.string().min(1),
   date: Joi.string().min(1),
-  category: Joi.string().min(1),
-  owner: Joi.string().min(1),
+  category: Joi.string().min(1)
 });
 
 const schemas = { createTaskSchema, updateTaskSchema };
