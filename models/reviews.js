@@ -40,7 +40,7 @@ const addReviewsSchema = Joi.object({
 });
 
 const updateReviewSchema = Joi.object({
-  stars: Joi.number().min(1).max(5).integer().required(),
+  rating: Joi.number().min(1).max(5).integer().required(),
 
   comment: Joi.string().required(),
 });
