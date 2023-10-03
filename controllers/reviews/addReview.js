@@ -2,7 +2,8 @@ const { Review } = require("../../models/reviews");
 const { HttpError } = require("../../helpers");
 
 const addReview = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: owner, name: ownerName, avatarURL: ownerAvatarURL } = req.user;
+  console.log();
 
   if (!owner) {
     throw HttpError(400, "Owner of review is missing");
@@ -18,7 +19,12 @@ const addReview = async (req, res) => {
     throw HttpError(409, "Your review is already in our database");
   }
 
-  const review = await Review.create({ ...req.body, owner });
+  const review = await Review.create({
+    ...req.body,
+    owner,
+    name: ownerName,
+    avatarURL: ownerAvatarURL,
+  });
 
   if (!review) {
     throw HttpError(500, "Internal Server Error (failed to create a review)");
