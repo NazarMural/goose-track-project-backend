@@ -24,6 +24,10 @@ const reviewSchema = new Schema(
       max: 5,
       default: 0,
     },
+    avatarURL: {
+      type: String,
+      default: "",
+    },
   },
 
   {
