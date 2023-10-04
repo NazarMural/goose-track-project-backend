@@ -9,18 +9,18 @@ const moment = require("moment");
 
 const getTasks = async (req, res) => {
   const { _id: owner } = req.user;
-  const { currentMonth } = req.query;
+  // const { currentMonth } = req.query;
 
   const result = await Task.find({ owner });
 
-  const sortTasksCurrentMonth = result
-    ? result.filter(({ date }) => {
-        const month = moment(date).format("YYYY-MM");
-        return month === currentMonth;
-      })
-    : [];
+  // const sortTasksCurrentMonth = result
+  //   ? result.filter(({ date }) => {
+  //       const month = moment(date).format("YYYY-MM");
+  //       return month === currentMonth;
+  //     })
+  //   : [];
 
-  res.json(sortTasksCurrentMonth);
+  res.json(result);
 };
 
 const createTask = async (req, res) => {
