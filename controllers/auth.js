@@ -99,7 +99,7 @@ const updeteUser = async (req, res) => {
 const uploadAvatar = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { avatarURL: req.file.path });
-  await Review.findByIdAndUpdate(
+  await Review.findOneAndUpdate(
     { owner: _id },
     { avatarURL: req.file.path },
     { new: true }
