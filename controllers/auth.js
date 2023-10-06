@@ -2,6 +2,7 @@ const { User } = require("../models/user");
 const { HttpError, ctrlWrapper } = require("../helpers");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { Review } = require("../models/reviews");
 
 const { SECRET_KEY } = process.env;
 
@@ -98,6 +99,11 @@ const updeteUser = async (req, res) => {
 const uploadAvatar = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { avatarURL: req.file.path });
+  await Review.findByIdAndUpdate(
+    { owner: _id },
+    { avatarURL: req.file.path },
+    { new: true }
+  );
   return res.json({
     file: req.file.path,
   });
