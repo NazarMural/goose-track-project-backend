@@ -9,7 +9,6 @@ const taskSchema = new Schema(
   {
     title: {
       type: String,
-      match: timeRegexp,
       required: true,
     },
     start: {
@@ -19,6 +18,7 @@ const taskSchema = new Schema(
     },
     end: {
       type: String,
+      match: timeRegexp,
       required: true,
     },
     priority: {
