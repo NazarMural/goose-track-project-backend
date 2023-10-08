@@ -71,20 +71,22 @@ const loginSchema = Joi.object({
     .messages({ "any.required": "missing required email field" }),
 });
 
+const dateRegexp = /^\d{4}-\d{2}-\d{2}$/;
+
 const updateSchema = Joi.object({
   name: Joi.string().messages({
     "any.required": "missing required name field",
   }),
-  birthday: Joi.string().messages({
+  birthday: Joi.string().pattern(dateRegexp, "YYYY-MM-DD").allow("").messages({
     "any.required": "missing required birthday field",
   }),
   email: Joi.string()
     .pattern(emailRegaxp)
     .messages({ "any.required": "missing required email field" }),
-  social: Joi.string().messages({
+  social: Joi.string().allow("").messages({
     "any.required": "missing required social field",
   }),
-  phone: Joi.string().messages({
+  phone: Joi.string().allow("").messages({
     "any.required": "missing required phone field",
   }),
 });
