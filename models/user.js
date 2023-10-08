@@ -72,21 +72,21 @@ const loginSchema = Joi.object({
 });
 
 const updateSchema = Joi.object({
-  name: Joi.string()
-    .min(1)
-    .messages({ "any.required": "missing required name field" }),
-  birthday: Joi.string()
-    .min(1)
-    .messages({ "any.required": "missing required birthday field" }),
+  name: Joi.string().messages({
+    "any.required": "missing required name field",
+  }),
+  birthday: Joi.string().messages({
+    "any.required": "missing required birthday field",
+  }),
   email: Joi.string()
     .pattern(emailRegaxp)
     .messages({ "any.required": "missing required email field" }),
-  social: Joi.string()
-    .min(1)
-    .messages({ "any.required": "missing required social field" }),
-  phone: Joi.string()
-    .min(1)
-    .messages({ "any.required": "missing required phone field" }),
+  social: Joi.string().messages({
+    "any.required": "missing required social field",
+  }),
+  phone: Joi.string().messages({
+    "any.required": "missing required phone field",
+  }),
 });
 
 const emailSchema = Joi.object({

@@ -8,8 +8,8 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "servers": [
-    {"url": "https://goose-track-project-backend.onrender.com"}, 
-    {"url": "http://localhost:3001"}
+    {"url": "https://goose-track-project-backend.onrender.com/api"}, 
+    {"url": "http://localhost:3001/api"}
   ],
   "tags": [
     {
@@ -18,7 +18,7 @@
     }
     ],
     "paths": {
-    "/api/auth/register": {
+    "/auth/register": {
       "post": {
         "tags": [
           "Auth"
@@ -64,12 +64,12 @@
         }
       }
     },
-    "/api/auth/login": {
+    "/auth/login": {
       "post": {
         "tags": [
           "Auth"
         ],
-        "summary": "Sign in existing user",
+        "summary": "Logs user into the system",
         "description": "User authorization",
         "parameters": [],
         "requestBody": {
@@ -106,6 +106,25 @@
           },
           "401": {
             "description": "Email or password is wrong"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "User logs out",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "User signed out"
+          },
+          "401": {
+            "description": "Not authorized"
           }
         }
       }
@@ -223,11 +242,11 @@
         }   
     },
     "securitySchemes": {
-          "Bearer": {
-            "type": "http",
-            "schema": "bearer",
-            "bearerFormat": "JWT"
-          }
-        }
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
 } 
 }
