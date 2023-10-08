@@ -50,7 +50,7 @@ taskSchema.post("save", handleMongooseError);
 const createTaskSchema = Joi.object({
   title: Joi.string().min(1).max(250).required(),
   priority: Joi.string().valid("low", "medium", "high").required(),
-  category: Joi.string().valid("todo", "in-progress", "done").required(),
+  category: Joi.string().valid("to-do", "in-progress", "done").required(),
   date: Joi.string().pattern(dateRegexp, "YYYY-MM-DD").required(),
   start: Joi.string().pattern(timeRegexp, "hh:mm").required(),
   end: Joi.string().pattern(timeRegexp, "hh:mm").required(),
