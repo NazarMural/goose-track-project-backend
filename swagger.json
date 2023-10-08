@@ -59,7 +59,8 @@
             }
           },
           "409": {
-            "description": "User with such email already exists"
+            "description": "User with such email already exists",
+            "content": {}
           }
         }
       }
@@ -105,7 +106,8 @@
             }
           },
           "401": {
-            "description": "Email or password is wrong"
+            "description": "Email or password is wrong",
+            "content": {}
           }
         }
       }
@@ -121,10 +123,41 @@
         "security": [{ "Bearer": [] }],
         "responses": {
           "204": {
-            "description": "User signed out"
+            "description": "User signed out",
+            "content": {}
           },
           "401": {
-            "description": "Not authorized"
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/current": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get current user info",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {},
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
           }
         }
       }
@@ -239,7 +272,53 @@
               "example": "User"
             }
           }
-        }   
+        },
+        "CurrentUserResponse": {
+        "type": "object",
+          "properties": {
+              "currentUser": {
+                "$ref": "#/components/schemas/CurrentUserResponseProperties"
+              }
+          }
+      },
+      "CurrentUserResponseProperties": {
+          "type": "object",
+          "properties": {
+            "_id":{"type": "string",
+                  "description": "User ID",
+                  "example": "65195e470738261f1c49458c"},
+                "name": {
+                  "type": "string",
+                  "description": "User name",
+                  "example": "user"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "User's email",
+                  "format": "email"
+                },
+                "avatarURL": {
+                  "type": "string",
+                  "description": "Avatar URL",
+                  "example": "http://res.cloudinary.com/photo.jpg"
+                },
+                "birthday": {
+                  "type": "string",
+                  "description": "Users birthday",
+                  "example": "1992-10-11"
+                },
+                "phone": {
+                  "type": "string",
+                  "description": "Users birthday",
+                  "example": "1234561144"
+                },
+                "social": {
+                  "type": "string",
+                  "description": "Users social",
+                  "example": "SomeName"
+                }
+        } 
+      }  
     },
     "securitySchemes": {
       "Bearer": {

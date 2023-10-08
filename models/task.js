@@ -59,7 +59,7 @@ const createTaskSchema = Joi.object({
 const updateTaskSchema = Joi.object({
   title: Joi.string().min(1).max(250),
   priority: Joi.string().valid("low", "medium", "high"),
-  category: Joi.string().valid("todo", "in-progress", "done"),
+  category: Joi.string().valid("to-do", "in-progress", "done"),
   date: Joi.string().pattern(dateRegexp, "YYYY-MM-DD"),
   start: Joi.string().pattern(timeRegexp, "hh:mm"),
   end: Joi.string().pattern(timeRegexp, "hh:mm"),
