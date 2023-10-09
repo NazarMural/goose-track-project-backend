@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.3",
   "info": {
-    "version": "1.0.1",
+    "version": "2.1.15",
     "title": "Swagger Goose Track",
     "description": "Swagger to work with the Goose Track backend."
   },
@@ -15,6 +15,14 @@
     {
       "name": "Auth",
       "description": "Authorization endpoints"
+    },
+    {
+      "name": "Tasks",
+      "description": "Tasks endpoints"
+    },
+    {
+      "name": "Reviews",
+      "description": "Reviews endpoints"
     }
     ],
     "paths": {
@@ -153,7 +161,13 @@
           },
           "400": {
             "description": "Validation error",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
           },
           "401": {
             "description": "Not authorized",
@@ -161,7 +175,475 @@
           }
         }
       }
-    }
+    },
+    "/users/edit": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Update user info",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "User info object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserInfoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserInfoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/avatars": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Update user avatar",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "User info object",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAvatarRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateAvatarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+
+     "/tasks?currentMonth={currentMonth}": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Update task",
+        "parameters": [
+          {
+            "name": "currentMonth",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The month identifier  to find tasks.",
+            "example": "2005-12"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {},
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTasksByMonthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/tasks/": {
+      "post": {
+        "tags": ["Tasks"],
+        "summary": "Create new task",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "task data object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/tasks/{taskID}": {
+      "patch": {
+        "tags": ["Tasks"],
+        "summary": "Update task",
+        "parameters": [
+          {
+            "name": "taskID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the task to delete."
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "User info object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Tasks"],
+        "summary": "Delete task",
+        "parameters": [
+          {
+            "name": "taskID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the task to delete"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {},
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteTaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/reviews/": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "Gets the last 10 user reviews.",
+        "parameters": [],
+        "requestBody": {},
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllReviewsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/reviews/own": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "Gets current users review",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {},
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUsersReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Reviews"],
+        "summary": "Adds new review",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Review data object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Reviews"],
+        "summary": "Updates existing review",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Review data object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Reviews"],
+        "summary": "Deletes current users review",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {},
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorBadRequesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+  }
 },
 "components": {
     "schemas": {
@@ -284,9 +766,6 @@
       "CurrentUserResponseProperties": {
           "type": "object",
           "properties": {
-            "_id":{"type": "string",
-                  "description": "User ID",
-                  "example": "65195e470738261f1c49458c"},
                 "name": {
                   "type": "string",
                   "description": "User name",
@@ -318,7 +797,528 @@
                   "example": "SomeName"
                 }
         } 
-      }  
+      },
+      "UpdateUserInfoRequest": {
+          "type": "object",
+          "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "User name",
+                  "example": "user"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "User's email",
+                  "format": "email"
+                },
+                "avatarURL": {
+                  "type": "string",
+                  "description": "Avatar URL",
+                  "example": "http://res.cloudinary.com/photo.jpg"
+                },
+                "birthday": {
+                  "type": "string",
+                  "description": "Users birthday",
+                  "example": "1992-10-11"
+                },
+                "phone": {
+                  "type": "string",
+                  "description": "Users birthday",
+                  "example": "1234561144"
+                },
+                "social": {
+                  "type": "string",
+                  "description": "Users social",
+                  "example": "SomeName"
+                }
+        } 
+      },
+      "UpdateUserInfoResponse": {
+          "type": "object",
+          "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "User name",
+                  "example": "user"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "User's email",
+                  "format": "email"
+                },
+                "avatarURL": {
+                  "type": "string",
+                  "description": "Avatar URL",
+                  "example": "http://res.cloudinary.com/photo.jpg"
+                },
+                "birthday": {
+                  "type": "string",
+                  "description": "Users birthday",
+                  "example": "1992-10-11"
+                },
+                "phone": {
+                  "type": "string",
+                  "description": "Users birthday",
+                  "example": "1234561144"
+                },
+                "social": {
+                  "type": "string",
+                  "description": "Users social",
+                  "example": "SomeName"
+                }
+        } 
+      },
+      "UpdateAvatarRequest": {
+        "type": "object",
+        "properties": {
+          "avatarURL": {
+            "type": "file"
+          }
+        }
+      },
+      "UpdateAvatarResponse": {
+        "type": "object",
+        "properties": {
+          "avatarURL": {
+            "type": "string",
+            "description": "Avatar URL",
+            "example": "http://res.cloudinary.com/photo.jpg"
+          }
+        }
+    },
+    "GetTasksByMonthResponse": {
+        "type": "array",
+          "properties": [{
+            "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Unique identifier for the task",
+                    "example": "6519b2c721711d86afea4a3e"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Task title",
+                    "example": "Test task 1"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "Task priority",
+                    "example": "medium"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Task category",
+                    "example": "todo"
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "Date of the task",
+                    "example": "2023-11-10"
+                  },
+                  "start": {
+                    "type": "string",
+                    "description": "Start time of the task",
+                    "example": "10:10"
+                  },
+                  "end": {
+                    "type": "string",
+                    "description": "End time of the task",
+                    "example": "20:20"
+                  }
+                }
+          }],
+          "example":[
+            {
+              "_id": "651aa445dd16d26661fd7ea3",
+              "title": "Task 1",
+              "priority": "medium",
+              "category": "to-do",
+              "date": "2023-10-09",
+              "start": "20:30",
+              "end": "30:20"
+            },
+            {
+              "_id": "651aa447dd16d26661fd7ea6",
+              "title": "Task 2",
+              "priority": "medium",
+              "category": "to-do",
+              "date": "2023-10-09",
+              "start": "20:30",
+              "end": "30:20"
+            }
+          ]
+        
+      },
+      "CreateTaskRequest": {
+        "type": "object",
+        "required": ["title", "priority", "status", "date", "start", "end"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Task title",
+            "example": "Some task title"
+          },
+          "priority": {
+            "type": "string",
+            "description": "Priority of the task",
+            "example": "medium"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the task",
+            "example": "to-do"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of the task",
+            "example": "2023-10-09"
+          },
+          "start": {
+            "type": "string",
+            "description": "Start time of the task",
+            "example": "11:30"
+          },
+          "end": {
+            "type": "string",
+            "description": "End time of the task",
+            "example": "14:10"
+          }
+        }
+    },
+      "CreateTaskResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+                  "type": "string",
+                  "description": "Unique identifier for the created task",
+                  "example": "651af32c1281770165a9be89"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Task title",
+                  "example": "Task title"
+                },
+                "priority": {
+                  "type": "string",
+                  "description": "Task priority",
+                  "example": "medium"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Task category",
+                  "example": "to-do"
+                },
+                "date": {
+                  "type": "string",
+                  "description": "Date of the task",
+                  "example": "2023-10-09"
+                },
+                "start": {
+                  "type": "string",
+                  "description": "Start time of the task",
+                  "example": "11:30"
+                },
+                "end": {
+                  "type": "string",
+                  "description": "End time of the task",
+                  "example": "14:10"
+                }
+              }
+      },
+      "UpdateTaskRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+                  "type": "string",
+                  "description": "Task title",
+                  "example": "Task title"
+                },
+                "priority": {
+                  "type": "string",
+                  "description": "Task priority",
+                  "example": "high"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Task category",
+                  "example": "to-do"
+                },
+                "date": {
+                  "type": "string",
+                  "description": "Date of the task",
+                  "example": "2023-10-09"
+                },
+                "start": {
+                  "type": "string",
+                  "description": "Start time of the task",
+                  "example": "12:00"
+                },
+                "end": {
+                  "type": "string",
+                  "description": "End time of the task",
+                  "example": "16:40"
+                }
+        }
+    },
+      "UpdateTaskResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+                  "type": "string",
+                  "description": "Unique identifier for the updated task",
+                  "example": "651af32c1281770165a9be89"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Task title",
+                  "example": "Task title"
+                },
+                "priority": {
+                  "type": "string",
+                  "description": "Task priority",
+                  "example": "high"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Task category",
+                  "example": "to-do"
+                },
+                "date": {
+                  "type": "string",
+                  "description": "Date of the task",
+                  "example": "2023-10-09"
+                },
+                "start": {
+                  "type": "string",
+                  "description": "Start time of the task",
+                  "example": "12:00"
+                },
+                "end": {
+                  "type": "string",
+                  "description": "End time of the task",
+                  "example": "16:40"
+                }
+        }
+    },
+    "DeleteTaskResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Unique identifier for the deleted task",
+            "example": "651af32c1281770165a9be89"
+          }
+        }
+    },
+    "GetAllReviewsResponse": {
+        "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "description": "HTTP status code",
+              "example": 200
+            },
+            "message": {
+              "type": "string",
+              "description": "Message describing the response",
+              "example": "Successfully"
+            },
+            "reviews": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Unique identifier for the review",
+                    "example": "651af32c1281770165a9be89"
+                  },
+                  "rating": {
+                    "type": "integer",
+                    "description": "User's rating for the item",
+                    "example": 5
+                  },
+                  "comment": {
+                    "type": "string",
+                    "description": "User's comment",
+                    "example": "User Comment"
+                  },
+                  "userName": {
+                    "type": "string",
+                    "description": "User's username",
+                    "example": "userName"
+                  },
+                  "avatarUrl": {
+                    "type": "string",
+                    "description": "URL of the user's avatar",
+                    "example": "http://res.cloudinary.com/photo.jpg"
+                  }
+                }
+              }
+            },
+            "total": {
+              "type": "integer",
+              "description": "Total reviews",
+              "example": 10
+            }
+        }
+      },
+      "GetUsersReviewResponse": {
+        "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "description": "HTTP status code",
+              "example": 200
+            },
+            "message": {
+              "type": "string",
+              "description": "Message describing the response",
+              "example": "Successfully"
+            },
+            "reviews": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Unique identifier for the review",
+                    "example": "651af32c1281770165a9be89"
+                  },
+                  "rating": {
+                    "type": "integer",
+                    "description": "User's rating for the item",
+                    "example": 5
+                  },
+                  "comment": {
+                    "type": "string",
+                    "description": "User's comment",
+                    "example": "User Comment"
+                  },
+                  "userName": {
+                    "type": "string",
+                    "description": "User's username",
+                    "example": "userName"
+                  },
+                  "avatarUrl": {
+                    "type": "string",
+                    "description": "URL of the user's avatar",
+                    "example": "http://res.cloudinary.com/photo.jpg"
+                  }
+              }
+            }
+        }
+      },
+      "AddReviewRequest": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "type": "integer",
+            "description": "User's rating for the item",
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "description": "User's comment",
+            "example": "User comment"
+          }
+        }
+      },
+      "AddReviewResponse": {
+        "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "description": "HTTP status code",
+              "example": 201
+            },
+            "message": {
+              "type": "string",
+              "description": "Message describing the response",
+              "example": "Successfully added review"
+            },
+            "reviewData": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "Unique identifier for the review",
+                    "example": "651af32c1281770165a9be89"
+                  },
+                "rating": {
+                  "type": "integer",
+                  "description": "User's rating for the item",
+                  "example": 5
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "User's comment",
+                  "example": "User comment"
+                }
+              }
+            }
+        }
+      },
+      "UpdateReviewRequest": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "type": "integer",
+            "description": "User's updated rating for the item",
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "description": "User's updated comment",
+            "example": "Review comment"
+          }
+        }
+      },
+      "UpdateReviewResponse": {
+        "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "description": "HTTP status code",
+              "example": 200
+            },
+            "message": {
+              "type": "string",
+              "description": "Message describing the response",
+              "example": "Review was updated successfully"
+            },
+            "reviewData": {
+              "type": "object",
+              "properties": {
+                "rating": {
+                  "type": "integer",
+                  "description": "User's updated rating for the item",
+                  "example": 5
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "User's updated comment",
+                  "example": "Review comment"
+                }
+              }
+            }
+        }
+      },
+      "DeleteReviewResponse": {
+        "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "description": "HTTP status code",
+              "example": 200
+            },
+            "message": {
+              "type": "string",
+              "description": "Message describing the response",
+              "example": "Review is deleted successfully"
+            }
+        }
+      }
     },
     "securitySchemes": {
       "Bearer": {
