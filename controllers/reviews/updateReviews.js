@@ -14,16 +14,21 @@ const updateReview = async (req, res) => {
 
   const review = await Review.findOneAndUpdate({ owner }, req.body, {
     new: true,
-  });
+  }).select("rating comment ");
 
   if (!review) {
     throw HttpError(404, "Review for update is not found");
   }
 
+  const responseData = {
+    rating: review.rating,
+    comment: review.comment,
+  };
+
   res.status(200).json({
     message: "Review was updated successfully",
     code: 200,
-    reviewData: review,
+    reviewData: responseData,
   });
 };
 
