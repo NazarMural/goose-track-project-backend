@@ -952,7 +952,7 @@
       },
       "CreateTaskRequest": {
         "type": "object",
-        "required": ["title", "priority", "status", "date", "start", "end"],
+        "required": ["title", "priority", "category", "status", "date", "start", "end"],
         "properties": {
           "title": {
             "type": "string",
