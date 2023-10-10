@@ -8,8 +8,9 @@ const ownReviews = async (req, res) => {
     throw HttpError(400, "Owner of review is missing");
   }
 
-  const review = await Review.find({ owner }).select(
-    "_id rating comment userName avatarUrl"
+  const review = await Review.find({ owner }).populate(
+    "owner",
+    "_id name avatarUrl"
   );
 
   if (!review) {
@@ -19,7 +20,7 @@ const ownReviews = async (req, res) => {
   res.status(200).json({
     message: "Successfully",
     code: 200,
-    reviews: review,
+    review,
   });
 };
 
