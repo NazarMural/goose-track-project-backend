@@ -159,13 +159,12 @@ const googleRedirect = async (req, res) => {
       Authorization: `Bearer ${tokenData.data.access_token}`,
     },
   });
-  console.log(userData);
 
   const token = userData.config.headers.Authorization.replace("Bearer ", "");
 
   console.log(token);
   return res.redirect(
-    `${process.env.FRONTEND_URL}/login?email=${userData.data.email}`
+    `${process.env.FRONTEND_URL}/login?name=${userData.data.name}&email=${userData.data.email}&tokenGoogle=${token}`
   );
 };
 
