@@ -160,12 +160,33 @@ const googleRedirect = async (req, res) => {
     },
   });
 
-  const token = userData.config.headers.Authorization.replace("Bearer ", "");
+  const user = await User.findOne({ email: userData.data.email });
 
-  console.log(token);
-  return res.redirect(
-    `${process.env.FRONTEND_URL}/login?name=${userData.data.name}&email=${userData.data.email}&tokenGoogle=${token}`
-  );
+  if (!user) {
+    const newUser = await User.create({
+      name: userData.data.name,
+      email: userData.data.email,
+    });
+
+    const payload = {
+      id: newUser._id,
+    };
+
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "17h" });
+
+    await User.findByIdAndUpdate(newUser._id, { token });
+
+    return res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
+  } else {
+    const payload = {
+      id: user._id,
+    };
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "17h" });
+
+    await User.findByIdAndUpdate(user._id, { token });
+
+    return res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
+  }
 };
 
 module.exports = {
