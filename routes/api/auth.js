@@ -36,4 +36,8 @@ router.post(
   ctrl.uploadAvatar
 );
 
+router.get("/auth/google", ctrl.googleAuth);
+
+router.get("/auth/google-redirect", ctrl.googleRedirect);
+
 module.exports = router;

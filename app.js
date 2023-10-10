@@ -1,14 +1,14 @@
+const path = require("path");
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
 
+const swaggerDocument = require("./swagger.json");
 const authRouter = require("./routes/api/auth");
 const reviewRouter = require("./routes/api/reviews");
 const tasksRouter = require("./routes/api/tasks");
-
 
 const app = express();
 
