@@ -116,7 +116,9 @@ const uploadAvatar = async (req, res) => {
   });
 };
 
+let LOCAL_URL = "";
 const googleAuth = async (req, res) => {
+  LOCAL_URL = req.headers.referer;
   const stringifiedParams = queryString.stringify({
     client_id: process.env.GOOGLE_CLIENT_ID,
     redirect_uri: `${process.env.BASE_URL}/api/auth/google-redirect`,
@@ -176,7 +178,7 @@ const googleRedirect = async (req, res) => {
 
     await User.findByIdAndUpdate(newUser._id, { token });
 
-    return res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
+    return res.redirect(`${LOCAL_URL}/login?token=${token}`);
   } else {
     const payload = {
       id: user._id,
@@ -185,7 +187,7 @@ const googleRedirect = async (req, res) => {
 
     await User.findByIdAndUpdate(user._id, { token });
 
-    return res.redirect(`${process.env.FRONTEND_URL}/login?token=${token}`);
+    return res.redirect(`${LOCAL_URL}/login?token=${token}`);
   }
 };
 
