@@ -20,10 +20,16 @@ const updateReview = async (req, res) => {
     throw HttpError(404, "Review for update is not found");
   }
 
+  const reviewData = {
+    _id: review._id,
+    comment: review.comment,
+    rating: review.rating,
+  };
+
   res.status(200).json({
     message: "Review was updated successfully",
     code: 200,
-    reviewData: review,
+    reviewData,
   });
 };
 
