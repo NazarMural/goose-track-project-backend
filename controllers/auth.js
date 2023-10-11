@@ -178,9 +178,7 @@ const googleRedirect = async (req, res) => {
 
     await User.findByIdAndUpdate(newUser._id, { token });
 
-    return res.redirect(
-      `${LOCAL_URL}/goose-track-project/login?token=${token}`
-    );
+    return res.redirect(`${LOCAL_URL}goose-track-project/login?token=${token}`);
   } else {
     const payload = {
       id: user._id,
@@ -189,9 +187,7 @@ const googleRedirect = async (req, res) => {
 
     await User.findByIdAndUpdate(user._id, { token });
 
-    return res.redirect(
-      `${LOCAL_URL}/goose-track-project/login?token=${token}`
-    );
+    return res.redirect(`${LOCAL_URL}goose-track-project/login?token=${token}`);
   }
 };
 
