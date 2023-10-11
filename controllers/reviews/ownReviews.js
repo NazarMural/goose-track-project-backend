@@ -8,10 +8,10 @@ const ownReviews = async (req, res) => {
     throw HttpError(400, "Owner of review is missing");
   }
 
-  const review = await Review.find({ owner }).populate(
-    "owner",
-    "_id name avatarUrl"
-  );
+  const review = await Review.find(
+    { owner },
+    "-createdAt -updatedAt -name -avatarURL -owner"
+  ).populate("owner", "_id name");
 
   if (!review) {
     throw HttpError(404, "Review is not found");

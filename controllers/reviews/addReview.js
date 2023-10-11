@@ -30,6 +30,12 @@ const addReview = async (req, res) => {
     throw HttpError(500, "Internal Server Error (failed to create a review)");
   }
 
+  const reviewData = {
+    _id: review._id,
+    comment: review.comment,
+    rating: review.rating,
+  };
+
   res.status(201).json({
     message: "Successfully added review",
     code: 201,
